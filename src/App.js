@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Accordion from "./Components/Accordion";
 import Dropdown from "./Components/Dropdown";
 import Search from "./Components/Search";
@@ -34,24 +35,44 @@ const options = [
 ];
 function App() {
   const [selected, setSelected] = useState(options[0]);
-  const [showDropDown, setShowDropDown] = useState(true);
+  // const [showDropDown, setShowDropDown] = useState(true);
 
   return (
-    <div>
-      <Accordion items={items} />
-      <Search />
-      <button onClick={() => setShowDropDown(!showDropDown)}>
-        Toggle DropDown
-      </button>
-      {showDropDown ? (
-        <Dropdown
-          onSelectedChange={setSelected}
-          selected={selected}
-          options={options}
-        />
-      ) : null}
-      <Translate />
-    </div>
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">Accordion</Link>
+          </li>
+          <li>
+            <Link to="/list">Search</Link>
+          </li>
+          <li>
+            <Link to="/dropdown">Dropdown</Link>
+          </li>
+          <li>
+            <Link to="/translate">Translate</Link>
+          </li>
+        </ul>
+        <Routes>
+          <Route exact path="/" element={<Accordion items={items} />}></Route>
+          <Route exact path="/list" element={<Search />}></Route>
+          <Route
+            exact
+            path="/dropdown"
+            element={
+              <Dropdown
+                onSelectedChange={setSelected}
+                selected={selected}
+                options={options}
+              />
+            }
+          ></Route>
+          <Route exact path="/translate" element={<Translate />}></Route>
+        </Routes>
+        {/* <Header /> */}
+      </div>
+    </Router>
   );
 }
 
